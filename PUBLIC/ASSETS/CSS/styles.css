@@ -1,0 +1,42 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.forms-menu ul {
+    display: flex;
+}
+
+.results-table-container {
+    position: relative;
+}
+
+.close-table-btn {
+    position: absolute;
+    top: 1rem;
+    bottom: 1rem;
+}
+
+.close-table-btn spam {
+    color: #ff0000;
+    font-size: 1.5rem;
+}
+
+.close-table-btn spam:hover {
+    color: #ccc;
+}
+
+.close-table-btn spam:active {
+    color: #ff0000;
+}
+
+.d-none {
+    display: none;
+}
