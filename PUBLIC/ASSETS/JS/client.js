@@ -1,71 +1,75 @@
-const d = document,
-    componentsContainer = d.querySelector('.components-container'),
-    searchForm = d.querySelector(".search_product_form"),
-    createForm = d.querySelector(".create_product_form")
-
-d.addEventListener('DOMContentLoaded', async () => {
-})
-  
-d.addEventListener('submit', e => {
-    if (e.target === searchForm) {
-        renderProducts(findProducts())
-    } else if (e.target === createForm()) {
-        renderProducts(createProduct())
+const createProduct = async form => {
+    try {
+        let res = await fetch(
+            'http://localhost:3000/products',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productName: form.productName.value,
+                    price: parseFloat(form.price.value),
+                    stockUnits: parseInt(form.stockUnits.value),
+                })
+            })
+        return await res.json()
+    } catch (error) {
+        throw error
     }
-})
+}
 
-const createProduct = async () => {
-    const productName = d.querySelector('.productName').value,
-        price = d.querySelector('.price').value,
-        stockUnits = d.querySelector('.stockUnits').value
-  
-    let res = await fetch(
-        'http://localhost:3000/products', 
-        {
-            method: 'POST',
+const findProducts = async form => {
+    try {
+        const queryParams = new URLSearchParams({
+            productCode: encodeURIComponent(form.productCode.value),
+            productName: encodeURIComponent(form.productName.value),
+            minPrice: encodeURIComponent(form.minPrice.value),
+            maxPrice: encodeURIComponent(form.maxPrice.value)
+        })
+        let res = await fetch(`http://localhost:3000/products?${queryParams.toString()}`)
+        return await res.json()
+    } catch (error) {
+        throw error
+    }
+}
+
+const deleteProduct = async productId => {
+    try {
+        await fetch(`http://localhost:3000/products/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        console.log('Producto eliminado correctamente');
+    } catch (error) {
+        throw error
+    }
+}
+
+const updateProduct = async row => {
+    try {
+        let res = await fetch(`http://localhost:3000/products/${row.id}`, {
+            method: 'UPDATE',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                productName,
-                price: parseFloat(price),
-                stockUnits: parseInt(stockUnits),
-            }),
+                productName: row.querySelector('edit-productName'),
+                price: row.querySelector('edit-price'),
+                stockUnits: row.querySelector('edit-stockUnits')
+            })
         })
-    return await res.json()
-}
-
-const findProducts = async () => {
-    try {
-        let res = await fetch('http://localhost:3000/products')
-        return await res.json() 
+        return await res.json()
     } catch (error) {
-        console.log('Error al buscar el producto')
+        throw error
     }
 }
 
-const renderProducts = async () => {
-    componentsContainer.innerHTML = await getComponent('results.html') 
-    const tableBody = d.querySelector('.results-table-body')
-
-    for (let i = 0; i < products.length; i++) {
-        let product = products[i]
-        tableBody.innerHTML = `
-            <row id='${product['id']}'>
-                <td>${product['productCode']}</td>
-                <td>${product['productName']}</td>
-                <td>${product['price']}</td>
-                <td>${product['stock']}</td>
-                <td>
-                    <button>Editar</button>
-                    <button>Eliminar</button>
-                </td>
-            </row>        
-        `
-    }   
-}
-  
-const getComponent = async componentName => {
-    const res = await fetch(`./ASSETS/HTML/COMPONENTS/${componentName}`)
-    return await res.text()
+export {
+    findProducts,
+    createProduct,
+    deleteProduct,
+    updateProduct
 }

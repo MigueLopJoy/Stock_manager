@@ -1,9 +1,11 @@
 const express = require('express'),
     mongoose = require('mongoose'),
-    bodyParser = require('body-parser')
+    bodyParser = require('body-parser'),
+    cors = require('cors'),
+    app = express(),
+    PORT = 3000
 
-const app = express()
-const PORT = 3000
+app.use(cors())
 
 mongoose.connect('mongodb://localhost:27017/inventoryManager', {
     useNewUrlParser: true,
@@ -21,38 +23,35 @@ const Product = mongoose.model('Product', {
 })
 
 app.get('/products', async (req, res) => {
-  // Obtener todos los productos
-    const products = await Product.find()
-    res.json(products)
-})
-
-app.get('/products/search', async (req, res) => {
     // Buscar productos por código, nombre y rango de precio
     const { productCode, productName, minPrice, maxPrice } = req.query,
         query = {}
-  
+
     if (productCode) {
         query.productCode = productCode
     }
-  
+
     if (productName) {
-        query.productName = new RegExp(productName, 'i')
+        console.log(productName)
+        query.productName = new RegExp(decodeURIComponent(productName), 'i')
     }
-  
-    if (minPrice !== undefined) {
-        query.price = { $gte: parseFloat(minPrice) } 
+
+    if (minPrice) {
+        query.price = { $gte: parseFloat(minPrice) }
     }
-  
-    if (maxPrice !== undefined) {
+
+    if (maxPrice) {
         if (query.price) {
-            query.price.$lte = parseFloat(maxPrice) 
+            query.price.$lte = parseFloat(maxPrice)
         } else {
             query.price = { $lte: parseFloat(maxPrice) }
         }
     }
-  
+
     try {
+        console.log(query)
         const products = await Product.find(query)
+        console.log(products)
         res.json(products)
     } catch (error) {
         res.status(500).json({ error: 'Error en la búsqueda de productos.' })
@@ -61,8 +60,8 @@ app.get('/products/search', async (req, res) => {
 
 app.post('/products', async (req, res) => {
     // Crear nuevo producto
-    const productCode = generateUniqueProductCode(),
-        newProduct = new Product({            
+    const productCode = await generateUniqueProductCode(),
+        newProduct = new Product({
             productCode,
             productName: req.body.productName,
             price: req.body.price,
@@ -80,7 +79,7 @@ app.put('/products/:id', async (req, res) => {
 
 app.delete('/products/:id', async (req, res) => {
     // Eliminar producto 
-    await Product.findByIdAndRemove(req.params.id)
+    await Product.findOneAndDelete({ _id: req.params.id })
     res.send('Producto eliminado')
 })
 
@@ -90,9 +89,9 @@ app.listen(PORT, () => {
 
 
 const generateUniqueProductCode = async () => {
-    let uniqueCode = generateProductCode() 
-    while (await Product.exists({ code: uniqueCode })) {
-      uniqueCode = generateProductCode()
+    let uniqueCode = generateProductCode()
+    while (await Product.exists({ productCode: uniqueCode })) {
+        uniqueCode = generateProductCode()
     }
     return uniqueCode
 }

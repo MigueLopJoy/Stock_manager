@@ -3,41 +3,45 @@
     <div class="menu-container">
         <menu class="forms-menu">
             <ul>
-                <li>Crear</li>
-                <li>Eliminar</li>
+                <li class="menu-btn search-menu-btn">Buscar</li>
+                <li class="menu-btn create-menu-btn">Crear</li>
             </ul>
         </menu>
     </div>
 
-    <div class="search-form-container d-none">
-        <form class="search_product_form">
+    <div class="form-container search-form-container">
+        <form class="form search-form">
             <div class="input-group">
-                <input type="text" class="productCode" name="productCode" placeholder="Código" required>
+                <input type="text" class="productCode" name="productCode" placeholder="Código">
             </div>
             <div class="input-group">
-                <input type="text" class="productName" name="productName" placeholder="Nombre" required>
+                <input type="text" class="productName" name="productName" placeholder="Nombre">
+            </div>
+            <div class="input-group price-range-group">
+                <input type="text" class="min-price" name="minPrice" placeholder="Precio mínimo">
+                <input type="text" class="max-price" name="maxPrice" placeholder="Precio máximo">
             </div>
             <div class="input-group">
-                <input type="text" class="minPrice" name="minPrice" placeholder="Precio mínimo">
-                <input type="text" class="maxPrice" name="maxPrice" placeholder="Precio máximo">
+                <input type="submit" value="Buscar">
             </div>
         </form>
     </div>
 
-    <div class="create-form-container">
-        <div class="create-form-container">
-            <form class="create_product_form">
-                <div class="input-group">
-                    <input type="text" class="productName" name="productName" placeholder="Nombre" required>
-                </div>
-                <div class="input-group">
-                    <input type="text" class="price" name="price" placeholder="Precio">
-                </div>
-                <div class="input-group">
-                    <input type="text" class="stockUnits" name="stockUnits" placeholder="Stock">
-                </div>
-            </form>
-        </div>        
+    <div class="form-container create-form-container d-none">
+        <form class="form create-form">
+            <div class="input-group">
+                <input type="text" class="productName" name="productName" placeholder="Nombre" required>
+            </div>
+            <div class="input-group">
+                <input type="text" class="price" name="price" placeholder="Precio">
+            </div>
+            <div class="input-group">
+                <input type="text" class="stockUnits" name="stockUnits" placeholder="Stock">
+            </div>
+            <div class="input-group">
+                <input type="submit" value="Crear">
+            </div>
+        </form>
     </div>
 
 </div>

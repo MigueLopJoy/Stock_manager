@@ -1,32 +1,143 @@
+/* GENERAL STYLES BEGIN */
+
 *,
 *::after,
 *::before {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
 }
 
 body {
     min-height: 100vh;
+    background-color: #f4f4f4;
+}
+
+main {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    padding-top: 5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    margin-bottom: 1rem;
+}
+
+.d-none {
+    display: none;
+}
+
+.result-message {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.warning-message {
+    color: #ff0000;
+}
+
+.success-message {
+    color: #00FF00;
+}
+
+/* GENERAL STYLES END */
+
+/* BUTTONS STYLES BEGIN */
+
+.forms-menu li,
+.form input[type="submit"] {
+    cursor: pointer;
+}
+
+.form input[type="submit"]:hover {
+    background-color: #ddd;
+}
+
+.form input[type="submit"]:active {
+    background-color: #f4f4f4;
+}
+
+/* BUTTONS STYLES END */
+
+.forms-container {
+    padding: 2rem 1rem;
+    border-radius: .5rem;
+    box-shadow: 0 .25rem .5rem rgba(0, 0, 0, 0.1);
 }
 
 .forms-menu ul {
     display: flex;
+    margin-bottom: .5rem;
 }
 
+.forms-menu li {
+    padding: .5rem 1rem;
+}
+
+
+.forms-menu li:hover {
+    border-bottom: 1px solid #ccc;
+}
+
+/* FORMS STYLES BEGIN */
+
+.form input {
+    width: 100%;
+    padding: .5rem;
+    border-radius: .25rem;
+    margin-bottom: .5rem;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+.form .price-range-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form .min-price,
+.form .max-price {
+    width: 49%;
+}
+
+/* FORMS STYLES END */
+
+
+/* RESULTS TABLE STYLES BEGIN */
+
 .results-table-container {
+    padding: 2.5rem 2rem;
+    box-shadow: 0 .25rem .5rem rgba(0, 0, 0, 0.1);
+    border-radius: .25rem;
+    overflow: hidden;
     position: relative;
 }
 
 .close-table-btn {
     position: absolute;
-    top: 1rem;
-    bottom: 1rem;
+    top: .75rem;
+    right: .75rem;
 }
 
 .close-table-btn spam {
     color: #ff0000;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    cursor: pointer;
 }
 
 .close-table-btn spam:hover {
@@ -37,6 +148,30 @@ body {
     color: #ff0000;
 }
 
-.d-none {
-    display: none;
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
 }
+
+.results-table th,
+.results-table td {
+    border: 1px solid #ddd;
+    padding: .5rem;
+    text-align: left;
+}
+
+.results-table th {
+    background-color: #f2f2f2;
+}
+
+.results-table tbody tr:nth-child(even) {
+    background-color: #fff;
+}
+
+.results-table button {
+    padding: .5rem .75rem;
+    margin-right: .25rem;
+    cursor: pointer;
+}
+
+/* RESULTS TABLE STYLES END */
