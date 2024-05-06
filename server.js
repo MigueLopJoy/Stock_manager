@@ -23,7 +23,6 @@ const Product = mongoose.model('Product', {
 })
 
 app.get('/products', async (req, res) => {
-    // Buscar productos por código, nombre y rango de precio
     const { productCode, productName, minPrice, maxPrice } = req.query,
         query = {}
 
@@ -32,7 +31,6 @@ app.get('/products', async (req, res) => {
     }
 
     if (productName) {
-        console.log(productName)
         query.productName = new RegExp(decodeURIComponent(productName), 'i')
     }
 
@@ -49,9 +47,7 @@ app.get('/products', async (req, res) => {
     }
 
     try {
-        console.log(query)
         const products = await Product.find(query)
-        console.log(products)
         res.json(products)
     } catch (error) {
         res.status(500).json({ error: 'Error en la búsqueda de productos.' })
@@ -59,7 +55,6 @@ app.get('/products', async (req, res) => {
 })
 
 app.post('/products', async (req, res) => {
-    // Crear nuevo producto
     const productCode = await generateUniqueProductCode(),
         newProduct = new Product({
             productCode,
@@ -72,19 +67,17 @@ app.post('/products', async (req, res) => {
 })
 
 app.put('/products/:id', async (req, res) => {
-    // Actualizar producto 
-    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const updatedProduct = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
     res.json(updatedProduct)
 })
 
 app.delete('/products/:id', async (req, res) => {
-    // Eliminar producto 
     await Product.findOneAndDelete({ _id: req.params.id })
     res.send('Producto eliminado')
 })
 
 app.listen(PORT, () => {
-    console.log(`Servidor iniciado en http://localhost:${PORT}`)
+    console.log(`Server initialized at http://localhost:${PORT}`)
 })
 
 

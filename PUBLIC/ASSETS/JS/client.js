@@ -36,13 +36,7 @@ const findProducts = async form => {
 
 const deleteProduct = async productId => {
     try {
-        await fetch(`http://localhost:3000/products/${productId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        console.log('Producto eliminado correctamente');
+        await fetch(`http://localhost:3000/products/${productId}`, { method: 'DELETE' })
     } catch (error) {
         throw error
     }
@@ -51,14 +45,12 @@ const deleteProduct = async productId => {
 const updateProduct = async row => {
     try {
         let res = await fetch(`http://localhost:3000/products/${row.id}`, {
-            method: 'UPDATE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                productName: row.querySelector('edit-productName'),
-                price: row.querySelector('edit-price'),
-                stockUnits: row.querySelector('edit-stockUnits')
+                productName: row.querySelector('.edit-productName').textContent,
+                price: row.querySelector('.edit-price').textContent,
+                stockUnits: row.querySelector('.edit-stockUnits').textContent
             })
         })
         return await res.json()

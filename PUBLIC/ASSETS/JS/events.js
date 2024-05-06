@@ -30,7 +30,7 @@ d.addEventListener('click', async e => {
         componentsContainer.innerHTML = await getComponent('forms.html')
     } else if (e.target.matches('.delete-btn')) {
         await handleDeletion(e.target)
-    } else if (e.target.matches('.update-btn')) {
+    } else if (e.target.matches('.edit-btn')) {
         await handleUpdate(e.target)
     }
 })

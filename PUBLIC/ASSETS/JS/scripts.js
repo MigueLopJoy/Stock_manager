@@ -18,19 +18,19 @@ const renderProducts = async products => {
             tableBody.innerHTML += `
                 <tr id='${product._id}'>
                     <td>${product.productCode}</td>
-                    <td class="edit-ProductName" contenteditable='true'>${product.productName}</td>
+                    <td class="edit-productName" contenteditable='true'>${product.productName}</td>
                     <td class="edit-price" contenteditable='true'>${product.price}</td>
                     <td class="edit-stockUnits" contenteditable='true'>${product.stockUnits}</td>
                     <td>
-                        <button class="edit-btn">Editar</button>
-                        <button class="delete-btn">Eliminar</button>
+                        <button class="edit-btn">Edit</button>
+                        <button class="delete-btn">Delete</button>
                     </td>
                 </tr>        
             `
         }
     } else {
         let message = d.createElement('P')
-        message.textContent = 'No se encontraron resultados'
+        message.textContent = 'No results were found'
         message.classList.add('result-message')
         message.classList.add('warning-message')
         d.querySelector('.results-table').insertAdjacentElement("afterend", message)
@@ -71,11 +71,11 @@ const handleCreation = async form => {
     }
 }
 
-const handleDeletion = async () => {
+const handleDeletion = async btn => {
     try {
-        await deleteProduct(e.target.closest('tr').id)
+        await deleteProduct(btn.closest('tr').id)
         componentsContainer.innerHTML = await getComponent('forms.html')
-        showSuccessMessage('Producto eliminado con éxito')
+        showSuccessMessage(d.querySelector('.menu-container'), 'Product deleted successfully')
     } catch (error) {
         showWarningMessage(error)
     }
@@ -83,9 +83,9 @@ const handleDeletion = async () => {
 
 const handleUpdate = async btn => {
     try {
-        let newProduct = await updateProduct(btn.closest('row'))
-        renderProducts(newProduct)
-        showSuccessMessage('Producto actualizado con éxito')
+        let newProduct = await updateProduct(btn.closest('tr'))
+        await renderProducts([newProduct])
+        showSuccessMessage(d.querySelector('.results-table'), 'Product edited successfully')
     } catch (error) {
         showWarningMessage(error)
     }
@@ -96,27 +96,34 @@ const getComponent = async componentName => {
     return await res.text()
 }
 
-const showSuccessMessage = error => {
+const showSuccessMessage = (element, text) => {
     let message = d.createElement('P')
-    message.textContent = error
+    message.textContent = text
     message.classList.add('result-message')
     message.classList.add('success-message')
-    d.querySelector('.form-container').insertAdjacentElement("beforebegin", message)
+    element.insertAdjacentElement("beforebegin", message)
+
+    setTimeout(() => {
+        message.remove()
+    }, 3000)
 }
 
-const showWarningMessage = error => {
+const showWarningMessage = (element, text) => {
     let message = d.createElement('P')
-    message.textContent = error
+    message.textContent = text
     message.classList.add('result-message')
     message.classList.add('warning-message')
-    d.querySelector('.form-container').insertAdjacentElement("beforebegin", message)
+    d.querySelector('.menu-container').insertAdjacentElement("beforebegin", message)
+
+    setTimeout(() => {
+        message.remove()
+    }, 3000)
 }
 
 export {
     toggleViews,
     renderProducts,
     getComponent,
-    showWarningMessage,
     handleSearch,
     handleCreation,
     handleDeletion,
